@@ -1,7 +1,109 @@
 <template>
     <div class="container">
-        <Scheme :hG="hG" :h="h" :h0="[0,0]" :v="v" :p="p"></Scheme>
-        <div class="row">
+        <div class="row" v-if="showIntro">
+            <div class="col col-12 mb-4 mt-4">
+                <h1 class="mb-4">Моделирование простой гидравлической системы</h1>
+
+                <p>
+                    В химическом производстве работает множество аппаратов и происходит большое количество процессов.
+                    Но прежде чем тратить деньги на строительство завода, делают его математическую модель. Такая модель
+                    позволяет подобрать нужные параметры различных аппаратов и избежать дорогостоящих экспериментов.
+                </p>
+                <p>
+                    Математическая модель производства сложна. Полноценные модели считаются при помощи специальных
+                    программ. Разобраться с тем, как работают подобные программы намного легче, понимая основы.
+                </p>
+                <p>
+                    Гидравлическая система служит для доставки и хранения жидких реагентов. Она является одной из самых
+                    простых подсистем химического производства, на примере которой удобно разобраться с основными способами,
+                    как составления и расчета реальных математических моделей.
+                </p>
+                <p>
+                    Чтобы начать работу над моделью, сформулируем ее в виде задачи.
+                </p>
+
+                <button class="btn btn-success btn-lg btn-block" @click="showIntro = false">Приступить к задаче</button>
+            </div>
+        </div>
+        <div class="row" v-else-if="showTask">
+            <div class="col col-12 mb-4 mt-4">
+                <h1 class="mb-4">Задача</h1>
+
+                <p>
+                    На схеме представлена гидравлическая система, состоящая из двух стоящих рядом емкостей, соединяющего их
+                    трубопровода и вентилей для регулировки потока жидкости
+                </p>
+
+                <p class="text-center">
+                    <img src="./assets/var4.png">
+                </p>
+
+                <p>
+                    Известны следующие параметры:
+                </p>
+                <p>
+                    Давления жидкости на входе в систему (слева на схеме), Па:
+                    P<sub>1</sub> = 7.82 ⋅ 10<sup>6</sup>,
+                    P<sub>2</sub> = 9.41 ⋅ 10<sup>6</sup>,
+                    P<sub>3</sub> = 7.45 ⋅ 10<sup>5</sup>,
+                    P<sub>4</sub> = 2.55 ⋅ 10<sup>5</sup>,
+                    P<sub>5</sub> = 8.26 ⋅ 10<sup>5</sup>,
+                    P<sub>6</sub> = 2.26 ⋅ 10<sup>5</sup>,
+                </p>
+                <p>
+                    Коэффициенты пропускной способности вентилей:
+                    K<sub>1</sub> = 0.01,
+                    K<sub>2</sub> = 0.01,
+                    K<sub>3</sub> = 0.01,
+                    K<sub>4</sub> = 0.01,
+                    K<sub>5</sub> = 0.01,
+                    K<sub>6</sub> = 0.01,
+                    K<sub>7</sub> = 0.002,
+                </p>
+                <p>
+                    Высоты ёмкостей, м:
+                    H<sup>G</sup><sub>1</sub> = 9,
+                    H<sup>G</sup><sub>2</sub> = 8
+                </p>
+                <p>
+                    Прочие параметры:
+                    Плотность жидкости, ρ<sub>ж</sub> = 1000 кг/м<sup>3</sup>,
+                    Начальное давление воздуха в ёмкости, P<sub>н</sub> = 10<sup>5</sup> Па,
+                    Площадь сечения трубопровода, S<sub>труб</sub> = 0.01 м<sup>2</sup>
+                </p>
+
+                <p>
+                    Для этой гидравлической системы:
+                </p>
+                <ol>
+                    <li>Построить математическое описание процесса движения жидкости в стационарном режиме;</li>
+                    <li>Построить информационную матрицу системы уравнений для выбора декомпозиционного алгоритма решения;</li>
+                    <li>Построить блок-схему алгоритма решения прямой задачи, включающей стандартные численные методы вычислительной математики;</li>
+                    <li>Вычислить неизвестные велчины: P<sub>7</sub> &mdash; P<sub>10</sub>, V<sub>1</sub> &mdash; V<sub>7</sub>, h<sub>1</sub>, h<sub>2</sub>;</li>
+                    <li>Построить график зависимости h<sub>1</sub>(P<sub>1</sub>)</li>
+                </ol>
+
+                <h2>Решить эту задачу поможет обучающее видео:</h2>
+
+                <p class="text-center">
+                    <iframe
+                            width="560"
+                            height="315"
+                            src="https://www.youtube.com/embed/videoseries?list=PLZ8wH2h6UeZKeEHKGfVlwR0r5opDRXi0k"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                    ></iframe>
+                </p>
+
+                <p>После того как уравнения будут готовы и расположены в правильном порядке, можно приступить к работе с тренажером</p>
+
+                <button class="btn btn-success btn-lg btn-block" @click="showTask = false">Начать работу с тренажером</button>
+            </div>
+        </div>
+
+        <Scheme :hG="hG" :h="h" :h0="[0,0]" :v="v" :p="p" v-if="!showIntro && !showTask"></Scheme>
+        <div class="row" v-if="!showIntro && !showTask">
             <div class="col col-12">
                 <div class="alert alert-danger" v-if="calculateError">{{calculateError}}</div>
 
@@ -14,7 +116,7 @@
                 <button class="btn btn-success btn-lg btn-block mb-4" @click="calculate">Расчитать</button>
             </div>
         </div>
-        <form>
+        <form v-if="!showIntro && !showTask">
             <div class="row">
                 <div class="col col-12 col-md-2">
                     <div class="form-group" v-for="index in 2" :key="index">
@@ -66,6 +168,8 @@
                 a: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.002],
                 v: [0, 0, 0, 0, 0, 0, 0],
 
+                showIntro: true,
+                showTask: true,
                 autoCalculateInProcess: false,
                 useAutoCalculate: true,
                 calculateError: false,
@@ -198,5 +302,11 @@ v[5] = k[5] * sign( p[9] - p[5] ) * sqrt( abs(p[9] - p[5]) );`,
     }
 </script>
 
-<style>
+<style scoped>
+    @media (max-width: 768px) {
+        iframe, img {
+            width: 100%!important;
+            height: auto;
+        }
+    }
 </style>
